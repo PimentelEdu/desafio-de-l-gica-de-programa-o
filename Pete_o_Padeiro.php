@@ -1,9 +1,9 @@
 <?php
 
-		/*Pete gosta de fazer bolos. Ele tem algumas receitas e ingredientes, mas é péssimo em matemática. Você pode ajudá-lo?
-		O primeiro parâmetro é a receita para um (1) bolo
-		O segundo parâmetro é a quantidade de ingredientes que ele tem disponível
-		Você consegue retornar quantos bolos(inteiros) ele pode fazer?*/
+	/*Pete gosta de fazer bolos. Ele tem algumas receitas e ingredientes, mas é péssimo em matemática. Você pode ajudá-lo?
+	O primeiro parâmetro é a receita para um (1) bolo
+	O segundo parâmetro é a quantidade de ingredientes que ele tem disponível
+	Você consegue retornar quantos bolos(inteiros) ele pode fazer?*/
 
 
 #Array das receitas
@@ -26,69 +26,65 @@ $ingredientesPossuidos = [
 		],
 		#Fiz esse segundo array apenas para pedir os valores na tela de forma mais organizada, na função mando apenas o primeiro
 		[
-				'maçãs', 
-				'farinha', 
-				'açúcar',                                   
-				'ovos', 
-				'leite', 
-				'óleo',
+		'maçãs', 
+		'farinha', 
+		'açúcar',                                   
+		'ovos', 
+		'leite', 
+		'óleo',
 		]
 		];  
 
 
 function cakes(array $recipe,array $ingredients){
 
-		$ValoresComuns = [];
-		$divisao;
-		$saida = "";
-		
-		foreach($ingredients as $index1 => $valor1){        /*Separando apenas os ingredientes que estão presentes na receita selecionada*/
-				foreach($recipe as $index2 => $valor2){
-						if($index1 === $index2){
-								$ValoresComuns[] = $index1;
-																												/* foreach pois trata-se de um array associativo então não fncionaria por 
-																												indices númericos pelo for*/
-						}   
-				}
+	$ValoresComuns = [];
+	$divisao;
+	$saida = "";
+	
+	foreach($ingredients as $index1 => $valor1){        /*Separando apenas os ingredientes que estão presentes na receita selecionada*/
+		foreach($recipe as $index2 => $valor2){
+			if($index1 === $index2){
+				$ValoresComuns[] = $index1;
+							/*foreach pois trata-se de um array associativo então não fncionaria por indices númericos
+							pelo for*/
+			}   
 		}
+	}
 
-		$tam = count($ValoresComuns);                      
+	$tam = count($ValoresComuns);                      
 
-		for($i = 0; $i < $tam; $i++){                   
-																		/*Esse 'for' está adicionando quantas porções daquele ingrediente o usuario possui*/
-				$AUX = $ValoresComuns[$i];                              
-				$divisao [] = (int) ($ingredients[$AUX] / $recipe[$AUX]); 
+	for($i = 0; $i < $tam; $i++){                   
+						/*Esse 'for' está adicionando quantas porções daquele ingrediente o usuario possui*/
+		$AUX = $ValoresComuns[$i];                              
+		$divisao [] = (int) ($ingredients[$AUX] / $recipe[$AUX]); 
+	}
 
-		}
+	$tamdivisao = count($divisao);
+	$menorNum = NULL;
 
-		$tamdivisao = count($divisao);
-		$menorNum = NULL;
+	for($i = 0; $i <$tamdivisao; $i++){
+		/*Esse for é reponsavel por pegar o menor valor daquelas porções, pois é necessario ter o minimo de ingredientes
+		para que conte como o bolo completo, poderia ser substituido pela função 'min()'*/
+		if($divisao[$i] != 0){
+			if ($menorNum === NULL || $divisao[$i] <$menorNum){
+				$menorNum = $divisao[$i];
+			}
+		} else {
+			$menorNum = 0;
+			break;
+		}        
+	}
 
-		for($i = 0; $i <$tamdivisao; $i++){
-																/*Esse for é reponsavel por pegar o menor valor daquelas porções, pois é necessario ter o minimo de ingredientes
-																para que conte como o bolo completo, poderia ser substituido pela função 'min()'*/
-				if($divisao[$i] != 0){
-						if($divisao[$i] > 0){
-								if ($menorNum === NULL || $divisao[$i] <$menorNum){
-										$menorNum = $divisao[$i];
+	if($menorNum == 0){                                 /*Vê se existe uma quantidade possível de bolos e exibe a ensagem apropriada*/
+		$saida = "Não é possivel fazer nenhum bolo\n";
+			
+	} else {                    
+		$saida = "É possivel fazer $menorNum bolos inteiros com esses ingredientes!\n";
+			
+	}
 
-								}
-						}
-				} else {
-						$menorNum = 0;
-						break;
-				}        
-		}
-
-		if($menorNum == 0){                                    /*Vê se existe uma quantidade possível de bolos e exibe a ensagem apropriada*/
-				$saida = "Não é possivel fazer nenhum bolo\n";
-				
-		} else {                    
-				$saida = "É possivel fazer $menorNum bolos inteiros com esses ingredientes!\n";
-				
-		}
-
-		return $saida;
+	return $saida;
 }
 
 #mostrando as receitas disponíveis
